@@ -1,0 +1,16 @@
+BootStrap: docker
+From: ubuntu:16.04
+
+%help
+	This is a metagenomics container. Following is the list of programs currently installed within this container.
+
+%environment
+	LC_ALL=C
+	PERL5LIB=/usr/share/perl5:/usr/share/perl/5.22.1:/usr/local/share/perl/5.22.1
+	MUGSY_INSTALL=/usr/local/bin
+
+%post
+	apt-get update
+	apt-get -y upgrade
+	apt-get -y install wget	
+	apt -y install ncbi-blast+
