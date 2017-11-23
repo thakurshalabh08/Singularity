@@ -8,9 +8,6 @@ From: ubuntu:16.04
 	LC_ALL=C
 	PERL5LIB=/usr/share/perl5:/usr/share/perl/5.22.1:/usr/local/share/perl/5.22.1
 
-%setup
-	cp usearch10.0.240_i86linux32  $SINGULARITY_ROOTFS/usearch
-
 %post
 	apt-get update
 	apt-get -y upgrade
@@ -43,7 +40,6 @@ From: ubuntu:16.04
 	apt-get -y install gsl-bin
 	apt -y install liblapack-dev liblapacke-dev default-jre bwa r-base
 	apt-get -y install xorg openbox
-	mv usearch /usr/local/bin
 	
 %apphelp BLAST
 
@@ -52,15 +48,6 @@ From: ubuntu:16.04
 %appinstall BLAST
 
 	apt -y install ncbi-blast+
-
-
-%apphelp Usearch
-
-	This is USEARCH program (version 10.0.240)
-
-%appinstall USearch
-
-	echo "Installing USEARCH program at location /usr/local/bin"
 
 %apphelp Samtools
 	
