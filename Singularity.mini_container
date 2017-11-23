@@ -15,8 +15,6 @@ From: ubuntu:16.04
 
 %post
 	apt-get update
-	mv usearch /usr/local/bin
-
 
 %apphelp BLAST
 
