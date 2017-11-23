@@ -24,3 +24,11 @@ From: ubuntu:16.04
 
 	apt -y install ncbi-blast+
 
+%apphelp MUSCLE
+
+	This is a MUSCLE help section
+
+%appinstall MUSCLE
+
+	apt-get -y install muscle
+
