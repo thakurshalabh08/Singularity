@@ -1,0 +1,128 @@
+BootStrap: docker
+From: ubuntu:16.04
+
+%help
+	This is a metagenomics container. Following is the list of programs currently installed within this container.
+
+%environment
+	LC_ALL=C
+	PERL5LIB=/usr/share/perl5:/usr/share/perl/5.22.1:/usr/local/share/perl/5.22.1
+
+%setup
+	cp usearch10.0.240_i86linux32  $SINGULARITY_ROOTFS/usearch
+
+%post
+	apt-get update
+	apt-get -y upgrade
+	apt -y install ssh
+	apt -y install rsync
+	apt -y install gcc
+	apt -y install g++
+	apt -y install vim
+	apt -y install make
+	apt-get -y install automake
+	apt-get -y install libghc-bzlib-dev
+	apt-get -y install zlib1g-dev
+	apt-get -y install libbz2-dev
+	apt-get -y install liblzma-dev
+	apt-get -y install libcurl-ocaml-dev
+	apt-get -y install libcurl3
+	apt-get -y install libcrypto++-dev
+	apt-get -y install git
+	apt -y install ncbi-blast+
+	apt-get -y install bioperl
+	apt-get -y install python-pip python-dev build-essential
+	apt-get -y install python-tk
+	pip install biopython
+	pip install scipy
+	pip install pysam
+	pip install matplotlib
+	apt-get -y install cython
+	apt-get -y install unzip
+	apt-get -y install libgsl0-dev
+	apt-get -y install gsl-bin
+	apt -y install liblapack-dev liblapacke-dev default-jre bwa r-base
+	apt-get -y install xorg openbox
+	mv usearch /usr/local/bin
+	
+%apphelp BLAST
+
+	This is NCBI BLAST command line tool (version 2.2.31)
+
+%appinstall BLAST
+
+	apt -y install ncbi-blast+
+
+
+%apphelp Usearch
+
+	This is USEARCH program (version 10.0.240)
+
+%appinstall USearch
+
+	echo "Installing USEARCH program at location /usr/local/bin"
+
+%apphelp Samtools
+	
+	This is Samtools help section. Required dependency Htslib
+
+%appinstall Samtools
+	echo "Downloading Htslib (dependency)"
+	git clone https://github.com/samtools/htslib.git
+	cd htslib
+	autoheader
+	autoconf
+	./configure
+	make
+	make install
+	cd ..
+
+	echo "Downloading Samtools"
+	git clone git://github.com/samtools/samtools.git
+	cd samtools
+	autoheader
+	autoconf
+	./configure --with-htslib=/usr/local
+	make
+	make install
+	cd ..
+
+%apphelp Bowtie2
+	This is Bowtie2 help section
+
+%appinstall Bowtie2
+
+	mkdir bowtie
+	cd bowtie
+	echo "Downloading Bowtie2"
+	wget https://sourceforge.net/projects/bowtie-bio/files/bowtie2/2.3.3.1/bowtie2-2.3.3.1-linux-x86_64.zip
+	echo "Extracting Bowtie2"
+	unzip bowtie2-2.3.3.1-linux-x86_64.zip
+	cd bowtie2-2.3.3.1-linux-x86_64
+	cp bowtie2* /usr/local/bin
+	cd ../../
+
+%apphelp Vsearch
+	This is Vsearch help section.
+
+%appinstall Vsearch
+	echo "Installing Vsearch program at the location /usr/local/bin"
+	git clone https://github.com/torognes/vsearch.git
+	cd vsearch
+	./autogen.sh
+	./configure --prefix=/usr/local
+	make
+	make install
+	cd ..
+
+%apphelp EMIRGE
+	This is EMIRGE help section
+
+%appinstall EMIRGE
+	echo "Installing EMIRGE program at the location /usr/local/bin"
+	git clone https://github.com/csmiller/EMIRGE.git
+	cd EMIRGE
+	python setup.py install --prefix=/usr/local/bin
+	cd ..
+
+
