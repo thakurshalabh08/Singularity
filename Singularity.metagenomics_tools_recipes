@@ -7,8 +7,8 @@ From: ubuntu:16.04
 %environment
 	LC_ALL=C
 	PERL5LIB=/usr/share/perl5:/usr/share/perl/5.22.1:/usr/local/share/perl/5.22.1
-	PYTHONPATH=$PYTHONPATH:/usr/local/bin/lib/python2.7/site-packages
-
+	PYTHONPATH=$PYTHONPATH:/usr/local/lib/python2.7/site-packages
+	PATH=$PATH:~/usearch
 %post
 	apt-get update
 	apt-get -y upgrade
@@ -19,16 +19,9 @@ From: ubuntu:16.04
 	apt -y install vim
 	apt -y install make
 	apt-get -y install automake
-	apt-get -y install libghc-bzlib-dev
-	apt-get -y install zlib1g-dev
-	apt-get -y install libbz2-dev
-	apt-get -y install liblzma-dev
-	apt-get -y install libcurl-ocaml-dev
-	apt-get -y install libcurl3
-	apt-get -y install libcrypto++-dev
 	apt-get -y install git
-	apt -y install ncbi-blast+
-	apt-get -y install bioperl
+	apt-get -y install unzip
+	apt-get -y install python2.7
 	apt-get -y install python-pip python-dev build-essential
 	apt-get -y install python-tk
 	pip install biopython
@@ -36,11 +29,63 @@ From: ubuntu:16.04
 	pip install pysam
 	pip install matplotlib
 	apt-get -y install cython
-	apt-get -y install unzip
+	apt-get -y install libghc-bzlib-dev
+	apt-get -y install zlib1g-dev
+	apt-get -y install libbz2-dev
+	apt-get -y install liblzma-dev
+	apt-get -y install libcurl-ocaml-dev
+	apt-get -y install libcurl3
+	apt-get -y install libcrypto++-dev
 	apt-get -y install libgsl0-dev
 	apt-get -y install gsl-bin
 	apt -y install liblapack-dev liblapacke-dev default-jre bwa r-base
 	apt-get -y install xorg openbox
+	apt-get -y install bioperl
+	apt-get -y install libgd2-xpm-dev
+	apt-get -y install pkg-config
+	cpan install Carp 
+	cpan install Clone 
+	cpan install Config::General 
+	cpan install Cwd 
+	cpan install Data::Dumper 
+	cpan install Digest::MD5 
+	cpan install File::Basename 
+	cpan install File::Spec::Functions 
+	cpan install File::Temp 
+	cpan install FindBin 
+	cpan install Font::TTF::Font 
+	cpan install ExtUtils::PkgConfig
+	cpan install GD 
+	cpan install GD::Image 
+	cpan install Getopt::Long 
+	cpan install IO::File 
+	cpan install List::MoreUtils 
+	cpan install List::Util 
+	cpan install Math::Bezier 
+	cpan install Math::Round 
+	cpan install Math::Trig 
+	cpan install Math::VecStat 
+	cpan install Memoize 
+	cpan install POSIX 
+	cpan install Params::Validate 
+	cpan install Pod::Usage 
+	cpan install Readonly 
+	cpan install Regexp::Common 
+	cpan install Statistics::Basic 
+	cpan install Storable 
+	cpan install Sys::Hostname 
+	cpan install Text::Balanced 
+	cpan install Text::Format 
+	cpan install Time::HiRes 
+	cpan install Set::IntSpan
+
+%apphelp Usearch
+
+	This is Usearch help section. Required to bind directory with the host system.
+
+%appinstall Usearch
+
+	mkdir ~/usearch
 	
 %apphelp BLAST
 
@@ -110,7 +155,372 @@ From: ubuntu:16.04
 	echo "Installing EMIRGE program at the location /usr/local/bin"
 	git clone https://github.com/csmiller/EMIRGE.git
 	cd EMIRGE
-	python setup.py install --prefix=/usr/local/bin
+	python setup.py build
+	python setup.py install --prefix=/usr/local
+	python emirge_makedb.py --silva-license-accepted
+	samtools faidx *.fasta
 	cd ..
+
+%apphelp BMTagger
+	This is BMTagger help section
+
+%appinstall BMTagger
+	echo "Installing BMTagger program at the location /usr/local/bin"
+	wget ftp://ftp.ncbi.nlm.nih.gov/pub/agarwala/bmtagger/bmtools.tar.gz
+	wget ftp://ftp.ncbi.nlm.nih.gov/pub/agarwala/bmtagger/src/srprism.tar.gz
+	tar xvzf bmtools.tar.gz
+	tar xvzf srprism.tar.gz
+	cd bmtools
+	make
+	cd ..
+	chmod +x bmtools/bmtagger/bmtagger.sh
+	chmod +x bmtools/bmtagger/bmtool
+	chmod +x bmtools/bmtagger/bmfilter
+	chmod +x bmtools/bmtagger/bmdump
+	chmod +x bmtools/bmtagger/extract_fullseq
+	cp bmtools/bmtagger/bmtagger.sh /usr/local/bin
+	cp bmtools/bmtagger/bmtool /usr/local/bin
+	cp bmtools/bmtagger/bmfilter /usr/local/bin
+	cp bmtools/bmtagger/bmdump /usr/local/bin
+	cp bmtools/bmtagger/extract_fullseq /usr/local/bin
+	
+	cd srprism/gnuac
+	sh ac.sh
+	make
+	cd ../../
+	cp srprism/gnuac/app/srprism /usr/local/bin
+
+%apphelp Prinseq
+	This is Prinseq help section
+
+%appinstall PRINSEQ
+	echo "Installing  Prinseq at /usr/local/bin"
+	wget https://sourceforge.net/projects/prinseq/files/standalone/prinseq-lite-0.20.4.tar.gz
+	tar -xvzf prinseq-lite-0.20.4.tar.gz
+	mv prinseq-lite-0.20.4/prinseq-lite.pl prinseq-lite-0.20.4/prinseq-lite
+	mv prinseq-lite-0.20.4/prinseq-graphs.pl prinseq-lite-0.20.4/prinseq-graphs
+	mv prinseq-lite-0.20.4/prinseq-graphs-noPCA.pl prinseq-lite-0.20.4/prinseq-graphs-noPCA
+	chmod +x prinseq-lite-0.20.4/prinseq-lite
+	chmod +x prinseq-lite-0.20.4/prinseq-graphs
+	chmod +x prinseq-lite-0.20.4/prinseq-graphs-noPCA
+	cp prinseq-lite-0.20.4/prinseq* /usr/local/bin
+
+%apphelp Circoletto
+	This is Circos help section
+
+%appinstall Circoletto
+	wget http://circos.ca/distribution/circos-0.69-6.tgz
+	tar xvzf circos-0.69-6.tgz
+	chmod +x circos-0.69-6/bin/circos
+	cp circos-0.69-6/bin/circos /usr/local/bin
+	cp circos-0.69-6/lib/Circos.pm /usr/local/share/perl/5.22.1
+	cp -r circos-0.69-6/lib/Circos /usr/local/share/perl/5.22.1
+
+	wget http://circos.ca/distribution/circos-tools-0.22.tgz
+	tar xvzf circos-tools-0.22.tgz
+	cp -r circos-tools-0.22 /usr/local/bin
+	
+	git clone https://github.com/infspiredBAT/Circoletto.git
+	mv Circoletto/circoletto.pl Circoletto/circoletto
+	chmod +x Circoletto/circoletto
+	cp Circoletto/circoletto /usr/local/bin
+
+%apphelp Metaphlan
+	This is Metaphlan help section
+
+%appinstall Metaphlan
+	echo "Installing Metaphlan at the location /usr/local/bin"
+	wget https://bitbucket.org/nsegata/metaphlan/get/2f1b17a1f4e9.zip
+	unzip 2f1b17a1f4e9.zip
+	cp nsegata-metaphlan-2f1b17a1f4e9/metaphlan.py /usr/local/bin
+	cp -r nsegata-metaphlan-2f1b17a1f4e9/bowtie2db /usr/local/bin
+	cp -r nsegata-metaphlan-2f1b17a1f4e9/blastdb /usr/local/bin
+	cp nsegata-metaphlan-2f1b17a1f4e9/conversion_scripts/*.py /usr/local/bin
+	cp nsegata-metaphlan-2f1b17a1f4e9/plotting_scripts/*.py /usr/local/bin
+	cp nsegata-metaphlan-2f1b17a1f4e9/utils/*.py /usr/local/bin
+
+%apphelp Spades
+	This is Spades help section
+
+%appinstall Spades
+	echo "Installing Spades at the location /usr/local/bin"
+	wget http://spades.bioinf.spbau.ru/release3.11.1/SPAdes-3.11.1-Linux.tar.gz
+	tar xvzf SPAdes-3.11.1-Linux.tar.gz
+	cp SPAdes-3.11.1-Linux/bin/* /usr/local/bin
+	cp -r SPAdes-3.11.1-Linux/share/* /usr/local/share
+
+%apphelp Sambamba
+	This is Sambamba help section
+
+%appinstall Sambamba
+	echo "Installing Sambamba at the location /usr/local/bin"
+	wget https://github.com/biod/sambamba/releases/download/v0.6.6/sambamba_v0.6.6_linux.tar.bz2
+	tar xvjf sambamba_v0.6.6_linux.tar.bz2
+	mv sambamba_v0.6.6 sambamba
+	cp sambamba /usr/local/bin
+
+%apphelp Desman
+	This is Desman help section
+
+%appinstall Desman
+	echo "Installing Desman at the location /usr/local/bin"
+	git clone https://github.com/chrisquince/DESMAN.git
+	cd DESMAN
+	python ./setup.py install
+	cp scripts/* /usr/local/bin
+	cp bin/* /usr/local/bin
+	cd ..
+
+%apphelp Quast
+	This is Quast help section
+
+%appinstall Quast
+	echo "Installing Quast at the location /usr/local/bin"
+	wget https://sourceforge.net/projects/quast/files/quast-4.6.0.tar.gz
+	tar xvzf quast-4.6.0.tar.gz
+	cd quast-4.6.0
+	python setup.py install
+	python setup.py install_full
+	cp quast.py /usr/local/bin
+	cp metaquast.py /usr/local/bin
+	cd ..
+
+%apphelp SSpace
+	This is SSpace help section
+
+%appinstall SSpace
+	echo "Installing SSpace at the location /usr/local/bin"
+	git clone https://github.com/nsoranzo/sspace_basic.git
+	cp sspace_basic/SSPACE_Basic* /usr/local/bin
+	cp -r sspace_basic/dotlib /usr/local/bin
+	cp -r sspace_basic/tools /usr/local/bin
+
+%apphelp Prodigal
+	This is Prodigal help section
+
+%appinstall Prodigal
+	echo "Installing Prodigal"
+	apt-get install prodigal
+
+%apphelp Prodege
+	This is Prodege help section
+
+%appinstall Prodege
+	echo "Install Prodege at the location /usr/local/bin"
+	wget https://bitbucket.org/berkeleylab/jgi-prodege/get/43335a54fc4a.zip
+	unzip 43335a54fc4a.zip
+	sh berkeleylab-jgi-prodege-43335a54fc4a/prodege_install.sh -i /usr/local
+	cp berkeleylab-jgi-prodege-43335a54fc4a/bin/* /usr/local/bin
+	cp berkeleylab-jgi-prodege-43335a54fc4a/lib/* /usr/local/lib
+
+%apphelp FastQC
+	This is FastQC help section
+
+%appinstall FastQC
+	echo "Installing FastQC at the location /usr/local/bin"
+	wget https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.5.zip
+	unzip fastqc_v0.11.5.zip
+	cp FastQC/fastqc /usr/local/bin
+
+%apphelp MultiQC
+	This is MultiQC help section
+
+%appinstall MultiQC
+	echo "Installing MultiQC"
+	pip install multiqc
+
+%apphelp Mummer
+	This is Mummer help section
+
+%appinstall Mummer
+	echo "Installing Mummer at /usr/local/bin"
+	wget https://sourceforge.net/projects/mummer/files/mummer/3.23/MUMmer3.23.tar.gz
+	tar xvzf MUMmer3.23.tar.gz
+	cd MUMmer3.23
+	make check
+	make install
+	cp mummer /usr/local/bin
+	cp show-coords /usr/local/bin
+	cp show-aligns /usr/local/bin
+	cp show-diff /usr/local/bin
+	cp show-snps /usr/local/bin
+	cp show-tiling /usr/local/bin
+	cp gaps /usr/local/bin
+	cp annotate /usr/local/bin
+	cp combineMUMs /usr/local/bin
+	cp delta-filter /usr/local/bin
+	cp repeat-match /usr/local/bin
+	cp mgaps /usr/local/bin
+	cp gaps /usr/local/bin
+	cp dnadiff /usr/local/bin
+	cp nucmer /usr/local/bin
+	cp run-mummer1 /usr/local/bin
+	cp run-mummer3 /usr/local/bin
+	cp exact-tandems /usr/local/bin
+	cp nucmer2xfig /usr/local/bin
+	cp mapview /usr/local/bin
+	cp promer /usr/local/bin
+	cp mummerplot /usr/local/bin
+	cd ..
+
+%apphelp Blat
+	This is Blat help section
+
+%appinstall Blat
+	echo "Installing Blat at /usr/local"
+	wget http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/blat/blat
+	wget http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/blat/gfClient
+	wget http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/blat/gfServer
+
+	chmod +x blat
+	chmod +x gfClient
+	chmod +x gfServer
+	cp blat /usr/local/bin
+	cp gfClient /usr/local/bin
+	cp gfServer /usr/local/bin
+
+%apphelp Boost-Graph
+	This is Boot-Graph toolkit help section
+
+%appinstall Boost-Graph
+	echo "Installing Boost-Graph toolkit"
+	wget https://sourceforge.net/projects/boost/files/boost/1.65.1/boost_1_65_1.tar.gz
+	tar xvzf boost_1_65_1.tar.gz
+	cd boost_1_65_1
+	sh bootstrap.sh --prefix=/usr/local
+	./b2 install --prefix=/usr/local
+	cd ..
+
+%appenv Boost-Graph
+	BOOST_DIR=/usr/local/include/boost
+	export BOOST_DIR
+
+%apphelp Qt4
+	This is Qt4.8.7 help section
+
+%appinstall Qt4
+	echo "Installing Qt4"
+	apt-get -y install qt4-dev-tools
+
+%apphelp Amos
+	This is Amos help section
+
+%appinstall Amos
+	echo "Installing Amos"
+	wget https://sourceforge.net/projects/amos/files/amos/3.1.0/amos-3.1.0.tar.gz
+	tar -xvzf amos-3.1.0.tar.gz
+	cd amos-3.1.0
+	./configure -prefix=/usr/local -with-Boost-dir=/usr/local/include/boost
+	sed -i '1 i\#include <getopt.h>' src/Align/find-tandem.cc
+	make
+	make install
+	cd ..
+
+%apphelp Pecan
+	This is Pecan help section
+
+%appinstall Pecan
+	echo "Installing Pecan at /usr/local/bin"
+	git clone https://github.com/pgajer/MCclassifier.git
+	cd MCclassifier/src
+	make clean
+	make
+	cd ..
+	cp bin/* /usr/local/bin
+	cd ..
+
+
+%apphelp BWA
+	This BWA help section
+
+%appinstall BWA
+	echo "Installing BWA at /usr/local/bin"
+	wget https://sourceforge.net/projects/bio-bwa/files/bwa-0.7.17.tar.bz2
+	tar xvjf bwa-0.7.17.tar.bz2
+	cd bwa-0.7.17
+	make
+	cp bwa /usr/local/bin
+	cd ..
+
+%apphelp Mugsy
+	This is Mugsy help section
+
+%appinstall Mugsy
+	echo "Installing Mugsy at /usr/local/bin"
+	wget https://sourceforge.net/projects/mugsy/files/mugsy_x86-64-v1r2.3.tgz
+	tar xvzf mugsy_x86-64-v1r2.3.tgz
+	cp mugsy_x86-64-v1r2.3/mugsy /usr/local/bin
+	cp mugsy_x86-64-v1r2.3/mugsyWGA /usr/local/bin
+	cp mugsy_x86-64-v1r2.3/*.pl /usr/local/bin
+	cp mugsy_x86-64-v1r2.3/mugsyenv.sh /usr/local/bin
+	cp mugsy_x86-64-v1r2.3/delta-dups.sh /usr/local/bin
+
+%apphelp Picard
+	This is Picard help section
+
+%appinstall Picard
+	echo "Installing Picard at /usr/local/bin"
+	wget https://github.com/broadinstitute/picard/releases/download/2.15.0/picard.jar
+	cp picard.jar /usr/local/bin
+	
+%apphelp cd-hit
+	This is cd-hit help section
+
+%appinstall cd-hit
+	echo "Installing cd-hit at the location /usr/local/bin"
+	git clone https://github.com/weizhongli/cdhit.git
+	cd cdhit
+	make
+	cp cd-hit /usr/local/bin
+	cd cd-hit-auxtools/
+	make
+	cp cd-hit-dup /usr/local/bin
+	cp cd-hit-lap /usr/local/bin
+	cp cd-hit-dup-PE-out.pl /usr/local/bin
+
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+
+
 
 
