@@ -11,7 +11,6 @@ From: ubuntu:16.04
 	PATH=$PATH:~/usearch
 %post
 	apt-get update
-	apt-get -y upgrade
 	apt -y install ssh
 	apt -y install rsync
 	apt -y install gcc
