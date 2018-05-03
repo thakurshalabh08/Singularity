@@ -1,0 +1,79 @@
+BootStrap: docker
+From: ubuntu:16.04
+
+%help
+	This is a metagenomics container. Following is the list of programs currently installed within this container.
+
+%environment
+	LC_ALL=C
+	PERL5LIB=/usr/share/perl5:/usr/share/perl/5.22.1:/usr/local/share/perl/5.22.1
+	PYTHONPATH=$PYTHONPATH:/usr/local/lib/python2.7/site-packages
+	PATH=$PATH:~/usearch
+%post
+	apt-get update
+	apt -y install ssh
+	apt -y install rsync
+	apt -y install gcc
+	apt -y install g++
+	apt -y install vim
+	apt -y install make
+	apt-get -y install automake
+	apt-get -y install git
+	apt-get -y install unzip
+	apt-get -y install python2.7
+	apt-get -y install python-pip python-dev build-essential
+	apt-get -y install python-tk
+	pip install biopython
+	pip install scipy
+	pip install pysam
+	pip install matplotlib
+	apt-get -y install cython
+	apt-get -y install libghc-bzlib-dev
+	apt-get -y install zlib1g-dev
+	apt-get -y install libbz2-dev
+	apt-get -y install liblzma-dev
+	apt-get -y install libcurl-ocaml-dev
+	apt-get -y install libcurl3
+	apt-get -y install libcrypto++-dev
+	apt-get -y install libgsl0-dev
+	apt-get -y install gsl-bin
+	apt -y install liblapack-dev liblapacke-dev default-jre bwa r-base
+	apt-get -y install xorg openbox
+	apt-get -y install bioperl
+	apt-get -y install libgd2-xpm-dev
+	apt-get -y install pkg-config
+	cpan install Carp 
+	cpan install Clone 
+	cpan install Config::General 
+	cpan install Cwd 
+	cpan install Data::Dumper 
+	cpan install Digest::MD5 
+	cpan install File::Basename 
+	cpan install File::Spec::Functions 
+	cpan install File::Temp 
+	cpan install FindBin 
+	cpan install Font::TTF::Font 
+	cpan install ExtUtils::PkgConfig
+	cpan install GD 
+	cpan install GD::Image 
+	cpan install Getopt::Long 
+	cpan install IO::File 
+	cpan install List::MoreUtils 
+	cpan install List::Util 
+	cpan install Math::Bezier 
+	cpan install Math::Round 
+	cpan install Math::Trig 
+	cpan install Math::VecStat 
+	cpan install Memoize 
+	cpan install POSIX 
+	cpan install Params::Validate 
+	cpan install Pod::Usage 
+	cpan install Readonly 
+	cpan install Regexp::Common 
+	cpan install Statistics::Basic 
+	cpan install Storable 
+	cpan install Sys::Hostname 
+	cpan install Text::Balanced 
+	cpan install Text::Format 
+	cpan install Time::HiRes 
+	cpan install Set::IntSpan
