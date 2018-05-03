@@ -6,7 +6,7 @@ From: ubuntu:16.04
 
 %runscript
 
-	exec echo "We are running a test container today"
+	exec echo "We are running a test container today 3rd May 2018"
 
 %environment
 	LC_ALL=C
