@@ -80,7 +80,7 @@ From: ubuntu:16.04
 
 %apphelp Usearch
 
-	This is Usearch help section. Required to bind directory with the host system.
+	This is Usearch help section. Required to bind directory with the host system. Test
 
 %appinstall Usearch
 
