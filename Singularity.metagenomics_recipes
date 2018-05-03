@@ -42,6 +42,7 @@ From: ubuntu:16.04
 	apt-get -y install bioperl
 	apt-get -y install libgd2-xpm-dev
 	apt-get -y install pkg-config
+	cpan install inc::latest
 	cpan install Carp 
 	cpan install Clone 
 	cpan install Config::General 
@@ -57,7 +58,7 @@ From: ubuntu:16.04
 	cpan install GD 
 	cpan install GD::Image 
 	cpan install Getopt::Long 
-	cpan install IO::File 
+	cpan install IO::File
 	cpan install List::MoreUtils 
 	cpan install List::Util 
 	cpan install Math::Bezier 
